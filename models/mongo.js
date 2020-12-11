@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const pass = String(process.env.REACT_APP_PASS);
+const pass = process.env.REACT_APP_PASS;
 const url = `mongodb+srv://sibesh:${pass}@cluster0.dfjse.mongodb.net/phonebook?retryWrites=true&w=majority`;
 
 console.log("trying to connect", url);
