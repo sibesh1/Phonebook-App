@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const url = process.env.MONGODB_URI;
+const url =
+  "mongodb+srv://sibesh:ngK8OAXz9RvNnyEx@cluster0.dfjse.mongodb.net/phonebook?retryWrites=true&w=majority";
 
 console.log("connecting to", url);
 
