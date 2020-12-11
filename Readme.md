@@ -1,4 +1,4 @@
-# A Simple Phonebook PWA
+## A Simple Phonebook PWA
 
 ### It has some basics features :
 
