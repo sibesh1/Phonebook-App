@@ -30,23 +30,4 @@ contactSchema.set("toJSON", {
   },
 });
 
-//const Contact = mongoose.model("Contact", contactSchema);
-
 module.exports = mongoose.model("Contact", contactSchema);
-
-// const contact = new Contact({
-//   name: "Tommy Singh",
-//   number: "8363725",
-// });
-
-/*Contact.find({}).then((result) => {
-  result.forEach((contact) => {
-    console.log(contact);
-  });
-  mongoose.connection.close();
-});*/
-
-// contact.save().then((result) => {
-//   console.log("contact saved!");
-//   mongoose.connection.close();
-// });
