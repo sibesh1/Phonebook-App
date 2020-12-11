@@ -35,7 +35,7 @@ let persons = [
 
 //Intro Page
 
-app.get("/info", (request, response) => {
+app.get("/", (request, response) => {
   response.send(
     "<h3>This Phonebook has info on 4 people by default.You can add or delete any contact as per your wish.</h3>"
   );
