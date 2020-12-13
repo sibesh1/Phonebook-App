@@ -30,28 +30,12 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 //POST REQUESTS
-const contactscontain = (name) => {
-  let flag = false;
-  persons.map((p) => {
-    if (p.name.toLowerCase() === name.toLowerCase()) {
-      flag = true;
-    }
-  });
-  return flag;
-};
-
 app.post("/api/persons", (request, response) => {
   const body = request.body;
 
   if (!body.name || !body.number) {
     return response.status(400).json({
       error: "Name or Number missing",
-    });
-  }
-
-  if (contactscontain(body.name)) {
-    return response.status(400).json({
-      error: "Name already in phonebook",
     });
   }
 
