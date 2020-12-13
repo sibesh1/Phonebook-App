@@ -1,45 +1,14 @@
+//MIDDLEWARE
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const Contact = require("./models/mongo");
-
-//MIDDLEWARE
 const app = express();
 app.use(express.json());
 app.use(cors()); //CORS validation
+app.use(bodyParser.json());
 app.use(express.static("build")); //Frontend Page
-
-//DEFAULT DATA
-let persons = [
-  {
-    id: 1,
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: 2,
-    name: "Ada Lovelace",
-    number: "39-44-525325",
-  },
-  {
-    id: 3,
-    name: "Dan Abramove",
-    number: "12-43-23435",
-  },
-  {
-    id: 4,
-    name: "Mary Poppendick",
-    number: "29-23-123456",
-  },
-];
-
-//Intro Page
-
-app.get("/", (request, response) => {
-  response.send(
-    "<h3>This Phonebook has info on 4 people by default.You can add or delete any contact as per your wish.</h3>"
-  );
-});
 
 //GET REQUESTS
 app.get("/api/persons", (request, response) => {
@@ -57,10 +26,7 @@ app.get("/api/persons/:id", (request, response) => {
         response.status(404).end();
       }
     })
-    .catch((error) => {
-      console.log(error);
-      response.status(400).send({ error: "malformatted id" });
-    });
+    .catch((error) => next(error));
 });
 
 //POST REQUESTS
@@ -94,9 +60,12 @@ app.post("/api/persons", (request, response) => {
     number: body.number,
   });
 
-  person.save().then((savedContact) => {
-    response.json(savedContact);
-  });
+  person
+    .save()
+    .then((savedContact) => {
+      response.json(savedContact);
+    })
+    .catch((error) => next(error));
 });
 
 //DELETE REQUESTS
@@ -113,6 +82,19 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+  }
+
+  next(error);
+};
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
